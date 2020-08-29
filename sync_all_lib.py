@@ -214,28 +214,6 @@ def copy_resize_rotate(files, output_path):
     return new_files, not_new_files
 
 
-def upload(files):
-    """
-    upload the list of files to the raspberry pi
-    """
-    cnt = 0
-    for idx, f in enumerate(sorted(files)):
-        src = f
-        dst = "pi@%s:photos/%s" % (g_params["PI-HOST"],
-                                   os.path.basename(f).lower())
-        args = g_params["scp_cmdline"] + [src, dst]
-        g_lgr.info("uploading file '%s' to '%s' (%d of %d)" %
-                   (os.path.basename(src), dst, idx + 1, len(files)))
-        g_lgr.debug(" ".join(args))
-        subprocess.check_output(
-            args,
-            stderr=subprocess.STDOUT,
-        )
-        cnt += 1
-    if len(files):
-        g_lgr.info("Uploaded %d files" % len(files))
-
-
 def cleanup_output_path(output_path, output_files):
     items = os.listdir(output_path)
     fullitems = map(lambda p: os.path.join(output_path, p), items)  # full path

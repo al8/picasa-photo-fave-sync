@@ -16,7 +16,7 @@ from plugins import filter_hash, filter_picasa, filter_recent, filter_regex
 from sync_all_lib import (cleanup_output_path, copy_resize_rotate,
                           get_dirs_files, get_files, remote_delete_files,
                           remote_get_files, send_remote_command, set_params,
-                          setup_logging, transfer_params_t, upload)
+                          setup_logging, transfer_params_t)
 
 
 def main(logger, args):
