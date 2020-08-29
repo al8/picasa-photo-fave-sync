@@ -7,14 +7,8 @@ Warning: this is super old hacky code originally from decades ago, slowly update
 
 # Dependencies
 
-Depends on a couple tools:
-
-## ImageMagick
+Depends on a imagmagick:
 
 https://imagemagick.org/script/download.php
 
 Download the portable version, e.g. ImageMagick-7.0.10-28-portable-Q16-x64.zip
-
-## Exif Jpeg header manipulation
-
-https://www.sentex.ca/~mwandel/jhead/

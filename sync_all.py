@@ -27,8 +27,6 @@ def main(logger, args):
 
         # For jpeg resizing. From ImageMagick-6.9.3-7-portable-Q16-x64
         "imagemagick_convert_binary": os.path.join(current_path, "convert.exe"),
-        # For Exif Jpeg header manipulation. From https://www.sentex.ca/~mwandel/jhead/
-        "jhead_binary": os.path.join(current_path, "jhead.exe"),
     })
 
     transfer_params_l = [
