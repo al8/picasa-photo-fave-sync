@@ -1,6 +1,7 @@
 import os
 import re
 
+
 def run(params, path, dirs, files, logger=None):
     """
     @param string path

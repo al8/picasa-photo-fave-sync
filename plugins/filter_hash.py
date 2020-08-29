@@ -1,6 +1,7 @@
 import time
 import zlib
 
+
 def run(params, path, dirs, files, logger=None):
     """
     @param string path
@@ -13,9 +14,11 @@ def run(params, path, dirs, files, logger=None):
 
     # get a 'random' selection of files
     if hash_x and len(files) > 0:
-        ### configure hash slicing here
-        interval_min = params.get("interval", 20)  # different every 20 minutes / slices
-        slices = params.get("slices", 4)  # split the interval into this many slices
+        # configure hash slicing here
+        # different every 20 minutes / slices
+        interval_min = params.get("interval", 20)
+        # split the interval into this many slices
+        slices = params.get("slices", 4)
         ###
 
         tmp_files = set()
