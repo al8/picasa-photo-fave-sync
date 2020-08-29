@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import logging
 import os
@@ -18,21 +19,17 @@ from sync_all_lib import (cleanup_output_path, copy_resize_rotate,
                           setup_logging, transfer_params_t, upload)
 
 
-def main(logger):
-    params = {
-        "output_path": r"D:\!Dropbox.com\Dropbox (Personal)\sync_output",
-        "output_jpg_size": 2048,
-        "output_jpg_quality": 55,
-    }
+def main(logger, args):
     current_path = os.path.dirname(os.path.realpath(__file__))
+    set_params({
+        "output_jpg_size": args.size,
+        "output_jpg_quality": args.quality,
 
-    # For jpeg resizing. From ImageMagick-6.9.3-7-portable-Q16-x64
-    params["imagemagick_convert_binary"] = os.path.join(current_path, "convert.exe")
-
-    # For Exif Jpeg header manipulation. From https://www.sentex.ca/~mwandel/jhead/
-    params["jhead_binary"] = os.path.join(current_path, "jhead.exe")
-
-    set_params(params)
+        # For jpeg resizing. From ImageMagick-6.9.3-7-portable-Q16-x64
+        "imagemagick_convert_binary": os.path.join(current_path, "convert.exe"),
+        # For Exif Jpeg header manipulation. From https://www.sentex.ca/~mwandel/jhead/
+        "jhead_binary": os.path.join(current_path, "jhead.exe"),
+    })
 
     transfer_params_l = [
         transfer_params_t(
@@ -117,17 +114,28 @@ def main(logger):
     for p in transfer_params_l:
         files |= get_files(p)
     logger.info("TOTAL FILES TO SYNC: %d (cached in %s)" %
-                (len(files), params["output_path"]))
+                (len(files), args.output_path))
 
     # resize rotate and copy the files
-    new_files, not_new_files = copy_resize_rotate(files, params["output_path"])
+    new_files, not_new_files = copy_resize_rotate(files, args.output_path)
     all_output_files = new_files | not_new_files
     if len(new_files):
         logger.info("FILES RESIZED: %d" % len(new_files))
 
-    cleanup_output_path(params["output_path"], all_output_files)
+    cleanup_output_path(args.output_path, all_output_files)
 
 
 if __name__ == "__main__":
     logger = setup_logging()
-    main(logger)
+
+    parser = argparse.ArgumentParser(
+        description='Resize some favorite photos.')
+    parser.add_argument("--output_path", "-o",
+                        default=r"D:\!Dropbox.com\Dropbox (Personal)\sync_output", type=str)
+
+    parser.add_argument("--size", '-s', default=2048, type=int)
+    parser.add_argument("--quality", '-q', default=55, type=int)
+
+    args = parser.parse_args()
+
+    main(logger, args)
