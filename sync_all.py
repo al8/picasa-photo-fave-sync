@@ -21,12 +21,6 @@ from sync_all_lib import (cleanup_output_path, copy_resize_rotate,
 def main(logger):
     params = {
         "output_path": r"D:\!Dropbox.com\Dropbox (Personal)\sync_output",
-        "scp_cmdline": [
-            r"D:\Progs\pscp.exe",
-            "-batch",
-            "-pw",
-            "pi",
-        ],
         "output_jpg_size": 2048,
         "output_jpg_quality": 55,
         "imagemagick_convert_binary":  # from ImageMagick-6.9.3-7-portable-Q16-x64
