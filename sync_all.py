@@ -23,11 +23,15 @@ def main(logger):
         "output_path": r"D:\!Dropbox.com\Dropbox (Personal)\sync_output",
         "output_jpg_size": 2048,
         "output_jpg_quality": 55,
-        "imagemagick_convert_binary":  # from ImageMagick-6.9.3-7-portable-Q16-x64
-        r"D:\!Dropbox.com\Dropbox (Personal)\raspberrypi-frameserver\transfer_client\convert.exe",
-        "jhead_binary":  # on windows, jpegtran.exe must be in the same path
-        r"D:\!Dropbox.com\Dropbox (Personal)\raspberrypi-frameserver\transfer_client\jhead.exe",
     }
+    current_path = os.path.dirname(os.path.realpath(__file__))
+
+    # For jpeg resizing. From ImageMagick-6.9.3-7-portable-Q16-x64
+    params["imagemagick_convert_binary"] = os.path.join(current_path, "convert.exe")
+
+    # For Exif Jpeg header manipulation. From https://www.sentex.ca/~mwandel/jhead/
+    params["jhead_binary"] = os.path.join(current_path, "jhead.exe")
+
     set_params(params)
 
     transfer_params_l = [
