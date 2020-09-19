@@ -1,0 +1,19 @@
+- D:\!Memories\staging area\Eye-Fi:
+  - regex:
+      dir: \d{4}[-]\d\d[-]\d\d[-].+
+      file: (((DSC|IMG_|[A-Z]+)\d+)|(\d+-\d+-\d+ \d+.\d+.\d+))[.]jpg
+- D:\!Memories\Photos\2011:
+  - regex:
+      dir: \d{8} .+
+      file: \d{8}_\d{4}.+[.]jpg
+  - picasa
+- D:\!Memories\Photos\2011
+- D:\!Memories\Photos\2012
+- D:\!Memories\Photos\2013
+- D:\!Memories\Photos\2014
+- D:\!Memories\Photos\2015
+- D:\!Memories\Photos\2016
+- D:\!Memories\Photos\2017
+- D:\!Memories\Photos\2018
+- D:\!Memories\Photos\2019
+- D:\!Memories\Photos\2020

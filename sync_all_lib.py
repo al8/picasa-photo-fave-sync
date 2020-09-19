@@ -14,12 +14,9 @@ import zlib
 import traceback
 import tempfile
 
-from plugins import \
-    filter_picasa, \
-    filter_hash, \
-    filter_recent, \
-    filter_regex
+import yaml
 
+import plugins
 
 def set_params(params):
     global g_params
@@ -71,6 +68,63 @@ transfer_params_t = namedtuple(
         "global_filters",
     ]
 )
+
+def conf_to_transfer_params(filename):
+    """
+    Given config file name, return transfer_params
+    """
+
+    default_filters = [
+        {
+            "regex":
+            {
+                "dir": r"\d{8} .+",
+                "file": r"\d{8}_\d{4}.+[.]jpg",
+            },
+        },
+        "picasa",
+    ]
+
+    with open(filename, 'r') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+
+    transfer_params_l = []
+    for path_params in data:
+        # get path and its parameters
+        if type(path_params) is str:
+            path = path_params
+            filters = default_filters
+        elif type(path_params) is dict and len(path_params) == 1:
+            path, filters = next(iter(path_params.items()))
+        else:
+            raise Exception("Invalid config in %s near '%s'" % (filename, path_params))
+
+        # interpret parameters and associate with filter name with function
+        local_filters = []
+        for f in filters:
+            if type(f) is str:
+                filtername = f
+                local_filters.append(getattr(plugins, "filter_%s" % filtername))
+            elif type(f) is dict and len(f) == 1:
+                filtername, params = next(iter(f.items()))
+                local_filters.append((
+                    getattr(plugins, "filter_%s" % filtername),
+                    params,
+                ))
+            else:
+                raise Exception("Invalid config in %s near '%s'" % (filename, path_params))
+
+        # add to transfer_params
+        transfer_params_l.append(
+            transfer_params_t(
+                path,
+                local_filters,
+                [],  # global_filters
+            ),
+        )
+
+    return transfer_params_l
+
 
 
 def get_dirs_files(path, local_filters):

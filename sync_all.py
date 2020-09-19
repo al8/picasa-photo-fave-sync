@@ -16,7 +16,7 @@ from plugins import filter_hash, filter_picasa, filter_recent, filter_regex
 from sync_all_lib import (cleanup_output_path, copy_resize_rotate,
                           get_dirs_files, get_files, remote_delete_files,
                           remote_get_files, send_remote_command, set_params,
-                          setup_logging, transfer_params_t)
+                          setup_logging, transfer_params_t, conf_to_transfer_params)
 
 
 def main(logger, args):
@@ -29,84 +29,7 @@ def main(logger, args):
         "imagemagick_convert_binary": os.path.join(current_path, "convert.exe"),
     })
 
-    transfer_params_l = [
-        transfer_params_t(
-            r"D:\!Memories\staging area\Eye-Fi",
-            [(filter_regex, {"dir": r"\d{4}[-]\d\d[-]\d\d[-].+",
-                             "file": r"(((DSC|IMG_|[A-Z]+)\d+)|(\d+-\d+-\d+ \d+.\d+.\d+))[.]jpg"})],  # local_filters
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2011",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2012",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2013",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2014",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2015",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2016",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2017",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2018",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2019",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-        transfer_params_t(
-            r"D:\!Memories\Photos\2020",
-            # local_filters
-            [(filter_regex, {"dir": r"\d{8} .+",
-                             "file": r"\d{8}_\d{4}.+[.]jpg", }), filter_picasa],
-            [],  # global_filters
-        ),
-    ]
+    transfer_params_l = conf_to_transfer_params(args.configfile)
 
     files = set()
     for p in transfer_params_l:
@@ -135,6 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_path", "-o",
                         default=r"D:\!Dropbox.com\Dropbox (Personal)\sync_output", type=str)
 
+    parser.add_argument("--configfile", type=str, required=True)
     parser.add_argument("--size", '-s', default=2048, type=int)
     parser.add_argument("--quality", '-q', default=55, type=int)
     parser.add_argument("--dryrun", action='store_true')
