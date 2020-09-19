@@ -90,7 +90,7 @@ def get_dirs_files(path, local_filters):
                 f, params = f_params, None
             dirs, files = f.run(params, path, dirs, files, g_lgr)
 
-    return dirs, files
+    return list(dirs), list(files)
 
 
 def get_files(transfer_param, path_override=None):

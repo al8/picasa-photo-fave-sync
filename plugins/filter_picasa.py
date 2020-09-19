@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import os
 
 g_path_config_map = {}  # key = path, value = parsed picasa config
@@ -17,7 +17,7 @@ def _getconfig(path):
         g_path_config_map[path] = None
         return None
 
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(picasa_ini)
     g_path_config_map[path] = config
     return config
@@ -30,7 +30,6 @@ def run(params, path, dirs, files, logger=None):
     @param [] files
     @return (dirs, files)
     """
-    picasa_ini = os.path.join(path, '.picasa.ini')
     config = _getconfig(path)
     if config is None:
         return dirs, []
@@ -50,7 +49,7 @@ def run(params, path, dirs, files, logger=None):
         if ('star', 'yes') in config.items(s):
             star_files.add(s.lower())
     # meta["pre_starred_filter"] = len(files)
-    files = filter(lambda e: os.path.basename(e).lower() in star_files, files)
+    files = list(filter(lambda e: os.path.basename(e).lower() in star_files, files))
     if logger and (len(files) > 0 or cnt_suppressed > 0):
         str_suppressed = (", %d files suppressed" %
                           cnt_suppressed) if cnt_suppressed else ""

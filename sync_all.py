@@ -114,6 +114,10 @@ def main(logger, args):
     logger.info("TOTAL FILES TO SYNC: %d (cached in %s)" %
                 (len(files), args.output_path))
 
+    if (args.dryrun):
+        print("--dryrun active, skipping action")
+        return
+
     # resize rotate and copy the files
     new_files, not_new_files = copy_resize_rotate(files, args.output_path)
     all_output_files = new_files | not_new_files
@@ -133,6 +137,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--size", '-s', default=2048, type=int)
     parser.add_argument("--quality", '-q', default=55, type=int)
+    parser.add_argument("--dryrun", action='store_true')
 
     args = parser.parse_args()
 
